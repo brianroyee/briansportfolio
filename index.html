@@ -141,7 +141,7 @@
         const commands = {
             "sudo apt update":"All updates are up to date!",
             "help": "Invalid Input! <br> Try 'help --a'",
-            "help --a": "All commands are as follows: <br><br> 1. about-me: Read about me <br> 2. contact: Links to connect <br> 3. resume: Download my resume <br> 4. clear: To clear terminal",
+            "help --a": "All commands are as follows: <br><br> 1. about-me: Read about me <br> 2. contact: Links to connect <br> 3. resume: Download my resume <br> 4. clear: To clear terminal <br> 5. exit(): close the",
             "about-me": `
             <pre>
                 <br>
@@ -210,6 +210,12 @@
                 } else if (command === "clear") {
                     // Clear the terminal content
                     outputDiv.innerHTML = "";
+                }   else if (command === "exit()") {
+                // Exit the website
+                outputDiv.innerHTML += `<p class="output">Closing the terminal...</p>`;
+                setTimeout(() => {
+                    window.close(); // Attempt to close the window
+                }, 1000);
                 } else {
                     outputDiv.innerHTML += `<p class="output">Command not found: ${command}</p>`;
                 }
