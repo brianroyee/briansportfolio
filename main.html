@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brian Roy Mathew</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #1a0f2a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .terminal-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: 500px;
+            border-radius: 8px;
+            background: #2e1c47;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.1);
+            z-index: 2;
+        }
+
+        .terminal {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 00px;
+        }
+
+        .command {
+            color: #9b4d96;
+        }
+
+        .output {
+            color: #dcdcdc;
+        }
+
+        .undernote {
+            color: #9b4d96;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .header {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #9b4d96;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        /* Canvas for Matrix rain effect */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        brian.terminal
+    </div>
+
+    <!-- Matrix rain effect canvas -->
+    <canvas id="matrixRain"></canvas>
+
+    <div class="terminal-container">
+        <div class="terminal">
+            <div id="output" class="text-sm"></div>
+            <div class="flex">
+                <span class="text-purple-400">brian@portfolio:~$&nbsp;</span>
+                <input id="commandInput" type="text" class="bg-transparent text-white border-none outline-none w-full" autofocus />
+            </div>
+        </div>
+    </div>
+
+    <div class="undernote">
+        <p>enter <span class="text-purple-300">help --a</span> to find all commands</p>
+    </div>
+
+    <script>
+        // Get the necessary DOM elements
+        const outputDiv = document.getElementById('output');
+        const commandInput = document.getElementById('commandInput');
+
+        // Matrix rain setup
+        const canvas = document.getElementById('matrixRain');
+        const ctx = canvas.getContext('2d');
+        const columns = canvas.width = window.innerWidth;
+        const rows = canvas.height = window.innerHeight;
+        const matrixChars = '#$%^&*!:";ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+=';
+        const fontSize = 18;
+        const columnsCount = Math.floor(columns / fontSize);
+        const drops = Array(columnsCount).fill(0);
+
+        function drawMatrixRain() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';  // Background fade effect
+            ctx.fillRect(0, 0, columns, rows);
+            ctx.fillStyle = 'rgba(255, 0, 255, 0.8)'; // Purple color for the rain
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > rows && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrixRain, 50);
+
+        // Sample commands
+        const commands = {
+            "sudo apt update":"All updates are up to date!",
+            "help": "Invalid Input! <br> Try 'help --a'",
+            "help --a": "All commands are as follows: <br><br> 1. about-me: Read about me <br> 2. contact: Links to connect <br> 3. resume: Download my resume <br> 4. clear: To clear terminal",
+            "about-me": `
+            <pre>
+                <br>
+ █████  ██████   ██████  ██    ██ ████████     ███    ███ ███████ 
+██   ██ ██   ██ ██    ██ ██    ██    ██        ████  ████ ██      
+███████ ██████  ██    ██ ██    ██    ██        ██ ████ ██ █████   
+██   ██ ██   ██ ██    ██ ██    ██    ██        ██  ██  ██ ██      
+██   ██ ██████   ██████   ██████     ██        ██      ██ ███████
+            </pre>
+            <br>
+    <b>Who am I? </b><br>
+    Myself <strong>Brian Roy Mathew</strong>, EEE UG from ASIET,Kalady. <br>
+    I am a passionate and driven engineering student with wide range of interests and expertise, particularly in fields of sustainable tech & humanitarian efforts.
+    <br><br>
+    Driven by curiosity and a desire to make a positive impact, I am constantly learning and evolving—whether it's advancing my programming skills, troubleshooting, or developing management skills.
+    Through it all, I strive to bring meaningful change to the world, using technology as a tool for progress and sustainability.
+    <br><br>
+    <STRONG>CURRENT ROLES:</STRONG> <BR>
+    >> <B>FOUNDER: </B> <EM>TECHNEEKS</EM> <BR>
+    >> <B>CAMPUS LEAD:</B> <EM>HACKCLUB ASIET</EM> <BR>
+    >> <B>TECHNICAL COORDINATOR:</B> <EM>IEEE SB ASIET<EM> <BR>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            `,
+            "contact": `
+            <pre>
+                <br>
+ ██████  ██████  ███    ██ ████████  █████   ██████ ████████ 
+██      ██    ██ ████   ██    ██    ██   ██ ██         ██    
+██      ██    ██ ██ ██  ██    ██    ███████ ██         ██    
+██      ██    ██ ██  ██ ██    ██    ██   ██ ██         ██    
+ ██████  ██████  ██   ████    ██    ██   ██  ██████    ██    
+            <pre>                                                  
+    >> <b>LinkedIn:</b> <a href="https://www.linkedin.com/in/brianroymathew" target=" " class="text-purple-300">www.linkedin.com/brianroymathew</a> 
+    >> <b>Instagram:</b> <a href="https:://www.instagram.com/brianroymathew" target=" " class="text-purple-300">www.instagram.com/brianroymathew</a> 
+    >> <b>Email: </b> <a href=" target=" " class="text-purple-300">brianroyee@ieee.org</a> <br>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`,
+            "resume-pdf": `
+            <pre>
+                <br>
+██████  ███████ ███████ ██    ██ ███    ███ ███████ 
+██   ██ ██      ██      ██    ██ ████  ████ ██      
+██████  █████   ███████ ██    ██ ██ ████ ██ █████   
+██   ██ ██           ██ ██    ██ ██  ██  ██ ██      
+██   ██ ███████ ███████  ██████  ██      ██ ███████ 
+            <pre>
+    <b>Here is my resume link:</b> leading.....
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`,
+        };
+
+        // Store entered commands and manage command history
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        // Handle the command input
+        commandInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                const command = commandInput.value.trim().toLowerCase();
+                
+                // Display the command in the terminal
+                outputDiv.innerHTML += `<p class="command">brian@portfolio:~$ ${command}</p>`;
+                
+                // Check if the command is valid and display the output
+                if (commands[command]) {
+                    outputDiv.innerHTML += `<p class="output">${commands[command]}</p>`;
+                } else if (command === "clear") {
+                    // Clear the terminal content
+                    outputDiv.innerHTML = "";
+                } else {
+                    outputDiv.innerHTML += `<p class="output">Command not found: ${command}</p>`;
+                }
+
+                // Add the command to history
+                if (command !== "") {
+                    commandHistory.push(command);
+                    historyIndex = commandHistory.length; // Reset to the latest command
+                }
+
+                // Clear the input field for the next command
+                commandInput.value = "";
+
+                // Scroll to the bottom
+                outputDiv.scrollTop = outputDiv.scrollHeight;
+            } else if (event.key === "ArrowUp") {
+                // Navigate to the previous command in history
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    commandInput.value = commandHistory[historyIndex];
+                }
+            } else if (event.key === "ArrowDown") {
+                // Navigate to the next command in history
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    commandInput.value = commandHistory[historyIndex];
+                } else {
+                    commandInput.value = "";
+                }
+            }
+        });
+
+    </script>
+
+</body>
+</html>
